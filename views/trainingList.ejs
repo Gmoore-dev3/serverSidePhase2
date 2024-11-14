@@ -1,0 +1,35 @@
+<%- include('partials/header') %>
+<h1>All Records</h1>
+    <div class="Central">
+    <table class="viewing">
+    <thead>
+        <tr>
+        <th>Name:</th>
+        <th>Surname:</th>
+        <th>ID:</th>
+        <th>Date of Reservation:</th>
+        <th>Reserved Date:</th>
+        <th>Reserved Time:</th>
+        <th>cardNum:</th>
+        <th>cardExp:</th>
+        <th>cardSec:</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% for(var i=0; i < reservation.length; i++) { %>
+        <tr>
+        <td><%= reservation[i].name %></td>
+        <td><%= reservation[i].surname %></td>
+        <td><%= reservation[i].ID %></td>
+        <td><%= reservation[i].currentDate.toISOString().slice(0, 10) %></td>
+        <td><%= reservation[i].date.toISOString().slice(0, 10) %></td>
+        <td><%= reservation[i].time %></td>
+        <td><%= reservation[i].cardNum %></td>
+        <td><%= reservation[i].cardExp %></td>
+        <td><%= reservation[i].cardSec %></td>
+        </tr>
+        <% } %>
+    </tbody>
+    </table>
+    </div>
+<%- include('partials/footer') %>
