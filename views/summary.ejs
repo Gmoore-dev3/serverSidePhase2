@@ -1,0 +1,25 @@
+<%- include('partials/header') %>
+<form action="/view" method="post">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" placeholder="John" pattern="[^0-9]*" title="Numbers are not allowed."required>
+
+    <label for="surname">Surname:</label>
+    <input type="text" id="surname" name="surname" placeholder="Smith" pattern="[^0-9]*" title="Numbers are not allowed." required>
+
+    <label for="id">ID:</label>
+    <input type="text" id="id" name="ID" placeholder="XXXXXXXXXX" pattern="^\d{10}$" minlength="10" maxlength="10" title="Please enter exactly 10 digits (including leading zeros)." required>
+    
+    <label for="startDate">Date:</label>
+    <input type="Date" id="startDate" name="startDate" min="2000-05-11" max="2080-05-20" required>
+
+    <label for="endDate">Date:</label>
+    <input type="Date" id="endDate" name="endDate" min="2000-05-11" max="2080-05-20" required>
+    <button type="submit">Generate Summary</button>
+</form>
+<br>
+<br>
+<form action="/view" method="post">
+    <button type="submit">Generate All Trainings</button>
+</form>
+
+<%- include('partials/footer') %>
