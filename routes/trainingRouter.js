@@ -26,10 +26,10 @@ trainingRouter.route("/add")
     res.render("add.ejs");   
 })
 .post((req, res, next) => {
-    console.log(req.body);
-    // Extract and trim input data 
+    // Extract each heading from the body
     const { name, surname, ID, date, time, cardNum, cardExp, cardSec } = req.body;
 
+    // trim the input data to avoid unnecessary white spaces while adding it record data
     currentDate = new Date();
     const trainingData = {
         name: name.trim(),
@@ -42,19 +42,15 @@ trainingRouter.route("/add")
         cardSec: cardSec.trim(),
         currentDate: currentDate,
     };
-    console.log(trainingData);
 
+    // create the record from the information given above
     training.create(trainingData)
-    .then((trainingCreated) => {
-        console.log("Training added successfully.");
 
-        // Fetch the training records after the new training is added
-        return training.find(); // Return the promise
-    })
-    .then((records) => {
-        // Render the trainingList EJS file with the fetched records
-        res.render("trainingList", { "reservation" : records });
-    })
+    // if the record is created, display that on the next page
+    .then((trainingCreated) => {
+            res.render("summary", { Message: "Successfully added training record" });
+        })
+    // otherwise, throw an error
     .catch(err => {
         console.error("Error:", err);
         res.status(500).json({ error: "An error occurred while adding training." });
@@ -75,10 +71,11 @@ trainingRouter.route("/remove")
     res.render("remove.ejs");   
 })
 .post((req, res, next) => {
-    console.log(req.body);
-    // Extract and trim input data 
+    // Extract each heading from the body 
     const { name, surname, ID, date, time} = req.body;
 
+    // trim the input data to avoid unnecessary white spaces while adding it following the filter
+    // using the "$and", we can search for records under specific headings without needing to know everything in the record
     const trainingData = {
         $and: [
             {name: name.trim()},
@@ -88,14 +85,16 @@ trainingRouter.route("/remove")
             {time: time.trim()},
             ]
     };
-        
-    console.log(trainingData);
 
+    // delete a record from the information given above
     training.findOneAndDelete(trainingData)
+
+    // if the record is deleted, display that on the next page
     .then((trainingDeleted) => {
-        if(trainingDeleted == null){console.log("No training record to remove."); res.render("remove")}
-        else{console.log("Training removed successfully."); res.render("index")}
+        console.log("Training removed successfully."); 
+        res.render("summary", { Message: "Successfully removed training record" });
     })
+    // otherwise, throw an error
     .catch(err => {
         console.error("Error:", err);
         res.status(500).json({ error: "An error occurred while removing training." });
@@ -112,13 +111,12 @@ trainingRouter.route("/remove")
 
 trainingRouter.route("/view")
 .get((req,res,next) => {
-    res.render("summary.ejs")
+    res.render("summary.ejs", { Message: "" })
 })
 .post((req, res, next) => {
     const {name, surname, ID, startDate, endDate} = req.body;
     let trainingData = {};
-    if (name)
-        {trainingData = {
+    if (name){trainingData = {
         $and: [
             {name: name.trim()},
             {surname: surname.trim()},
@@ -170,8 +168,8 @@ trainingRouter.route("/edit")
 
     training.findOneAndUpdate(trainingData, trainingUpdate)
     .then((trainingUpdated) => {
-        console.log("Training editted successfully.");
-        res.render("index");
+        console.log("Training updated successfully."); 
+        res.render("summary", { Message: "Successfully updated training record" });
     })
     .catch(err => {
         console.error("Error:", err);

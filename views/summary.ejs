@@ -1,4 +1,6 @@
 <%- include('partials/header') %>
+<h1>View Summary</h1>
+<p><%= Message %></p>
 <form action="/view" method="post">
     <label for="name">Name:</label>
     <input type="text" id="name" name="name" placeholder="John" pattern="[^0-9]*" title="Numbers are not allowed."required>
