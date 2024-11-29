@@ -4,6 +4,7 @@
     <table class="viewing">
     <thead>
         <tr>
+        <!-- the headings to display the meaning of each reservation field output-->
         <th>Name:</th>
         <th>Surname:</th>
         <th>ID:</th>
@@ -13,9 +14,12 @@
         <th>cardNum:</th>
         <th>cardExp:</th>
         <th>cardSec:</th>
+        <th>Modify</th>
+        <th>Remove</th>
         </tr>
     </thead>
     <tbody>
+        <!-- for each reservation found, print the values under the following headings-->
         <% for(var i=0; i < reservation.length; i++) { %>
         <tr>
         <td><%= reservation[i].name %></td>
@@ -27,6 +31,20 @@
         <td><%= reservation[i].cardNum %></td>
         <td><%= reservation[i].cardExp %></td>
         <td><%= reservation[i].cardSec %></td>
+        <td>
+            <!-- post an edit request for a record and send the record _id in the request body-->
+            <form action="/editID" method="POST">
+            <input type="hidden" name="_id" value="<%= reservation[i]._id %>" required>
+            <button type="submit">Edit</button>
+            </form>
+        </td>
+        <td>
+            <!-- post a remove request for a record and send the record _id in the request body-->
+            <form action="/remove" method="POST">
+            <input type="hidden" name="_id" value="<%= reservation[i]._id %>" required>
+            <button type="submit">Remove</button>
+            </form>
+        </td>
         </tr>
         <% } %>
     </tbody>

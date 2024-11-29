@@ -23,7 +23,7 @@ trainingRouter.route("/")
 
 trainingRouter.route("/add")
 .get((req,res,next) => {
-    res.render("add.ejs");   
+    res.render("add");   
 })
 .post((req, res, next) => {
     // Extract each heading from the body
@@ -46,7 +46,7 @@ trainingRouter.route("/add")
     // create the record from the information given above
     training.create(trainingData)
 
-    // if the record is created, display that on the next page
+    // if the record is created, display the success message on the next page
     .then((trainingCreated) => {
             res.render("summary", { Message: "Successfully added training record" });
         })
@@ -54,7 +54,6 @@ trainingRouter.route("/add")
     .catch(err => {
         console.error("Error:", err);
         res.status(500).json({ error: "An error occurred while adding training." });
-        next(err); // Call next with the error to handle it elsewhere if needed
     });
 })
 .put((req, res, next) => {
@@ -68,28 +67,13 @@ trainingRouter.route("/add")
 
 trainingRouter.route("/remove")
 .get((req,res,next) => {
-    res.render("remove.ejs");   
+    res.render("remove");   
 })
 .post((req, res, next) => {
-    // Extract each heading from the body 
-    const { name, surname, ID, date, time} = req.body;
+    // delete a record by using the _id passed through the hidden input
+    training.findByIdAndDelete(req.body._id)
 
-    // trim the input data to avoid unnecessary white spaces while adding it following the filter
-    // using the "$and", we can search for records under specific headings without needing to know everything in the record
-    const trainingData = {
-        $and: [
-            {name: name.trim()},
-            {surname: surname.trim()},
-            {ID: ID.trim()},
-            {date: date.trim()},
-            {time: time.trim()},
-            ]
-    };
-
-    // delete a record from the information given above
-    training.findOneAndDelete(trainingData)
-
-    // if the record is deleted, display that on the next page
+    // if the record is deleted, display the success on the next page
     .then((trainingDeleted) => {
         console.log("Training removed successfully."); 
         res.render("summary", { Message: "Successfully removed training record" });
@@ -115,7 +99,9 @@ trainingRouter.route("/view")
 })
 .post((req, res, next) => {
     const {name, surname, ID, startDate, endDate} = req.body;
+    // make an empty filter
     let trainingData = {};
+    // if information is submitted, add it to the AND filter
     if (name){trainingData = {
         $and: [
             {name: name.trim()},
@@ -124,8 +110,10 @@ trainingRouter.route("/view")
             {date: {$lte: endDate, $gte: startDate}}
             ]
         }}
+    // find the records that match the filter
     training.find(trainingData)
     .then(records => {
+        // display the records found using traininglist
         res.render("trainingList", { "reservation": records });
     })
     .catch(err => {
@@ -135,38 +123,55 @@ trainingRouter.route("/view")
 })
 .put((req, res, next) => {
     res.statusCode = 403;
-    res.end("PUT operation not supported on /");
+    res.end("PUT operation not supported on /view");
 })
 .delete((req, res, next) => {
     res.statusCode = 403;
-    res.end("DELETE operation not supported on /");
+    res.end("DELETE operation not supported on /view");
 });
+
+trainingRouter.route("/editID")
+.get((req, res, next) => {
+    res.statusCode = 403;
+    res.end("DELETE operation not supported on /editID");
+})
+.post((req, res, next) => {
+    // display the edit file with _id as an ejs variable
+    res.render("edit", { _id: req.body._id })
+})
+.put((req, res, next) => {
+    res.statusCode = 403;
+    res.end("PUT operation not supported on /editID");
+})
+.delete((req, res, next) => {
+    res.statusCode = 403;
+    res.end("DELETE operation not supported on /editID");
+});
+
 
 trainingRouter.route("/edit")
 .get((req,res,next) => {
-    res.render("edit.ejs");
+    res.statusCode = 403;
+    res.end("GET operation not supported on /edit");
 })
 .post((req, res, next) => {
-    console.log(req.body);
-    // Extract and trim input data 
-    const {name, surname, ID, date, time, newDate, newTime} = req.body;
+    // retrieve all forum information and parse it
+    const {_id, newName, newSurname, newId, newDate, newTime, newCardNum, newCardExp, newCardSec} = req.body;
 
-    const trainingData = {
-        $and: [
-            {name: name.trim()},
-            {surname: surname.trim()},
-            {ID: ID.trim()},
-            {date: date.trim()},
-            {time: time.trim()},
-            ]
-    };
-    const trainingUpdate ={
-        date: newDate.trim(),
-        time: newTime.trim(),
-    };
-    console.log(trainingData);
+    const trainingUpdate = {};
 
-    training.findOneAndUpdate(trainingData, trainingUpdate)
+    // for any field that was given an input, add that information to the updated information
+    if (newName) {trainingUpdate.name = newName.trim();}
+    if (newSurname) {trainingUpdate.surname = newSurname.trim();}
+    if (newId) {trainingUpdate.ID = newId.trim();}
+    if (newDate) {trainingUpdate.date = newDate.trim();}
+    if (newTime) {trainingUpdate.time = newTime.trim();}
+    if (newCardNum) {trainingUpdate.cardNum = newCardNum.trim();}
+    if (newCardExp) {trainingUpdate.cardExp = newCardExp.trim();}
+    if (newCardSec) {trainingUpdate.cardSec = newCardSec.trim();}
+
+    // find and update the record
+    training.findByIdAndUpdate(_id, trainingUpdate)
     .then((trainingUpdated) => {
         console.log("Training updated successfully."); 
         res.render("summary", { Message: "Successfully updated training record" });
@@ -174,7 +179,6 @@ trainingRouter.route("/edit")
     .catch(err => {
         console.error("Error:", err);
         res.status(500).json({ error: "An error occurred while editting training." });
-        next(err); // Call next with the error to handle it elsewhere if needed
     });
 })
 .put((req, res, next) => {
@@ -192,15 +196,15 @@ trainingRouter.route("/help")
 })
 .post((req, res, next) => {
     res.statusCode = 403;
-    res.end("POST operation not supported on /");
+    res.end("POST operation not supported on /help");
 })
 .put((req, res, next) => {
     res.statusCode = 403;
-    res.end("PUT operation not supported on /");
+    res.end("PUT operation not supported on /help");
 })
 .delete((req, res, next) => {
     res.statusCode = 403;
-    res.end("DELETE operation not supported on /");
+    res.end("DELETE operation not supported on /help");
 });
 
 trainingRouter.route("/about")
@@ -209,15 +213,15 @@ trainingRouter.route("/about")
 })
 .post((req, res, next) => {
     res.statusCode = 403;
-    res.end("POST operation not supported on /");
+    res.end("POST operation not supported on /about");
 })
 .put((req, res, next) => {
     res.statusCode = 403;
-    res.end("PUT operation not supported on /");
+    res.end("PUT operation not supported on /about");
 })
 .delete((req, res, next) => {
     res.statusCode = 403;
-    res.end("DELETE operation not supported on /");
+    res.end("DELETE operation not supported on /about");
 });
 
 module.exports = trainingRouter;

@@ -1,29 +1,37 @@
 <%- include('partials/header') %>
-<body>
+<!-- form to input data for record creation -->
+<!-- validation is carried out on each input to ensure the correct type of information is added -->
     <h1>Add Record</h1>
     <form action="/add" method="post">
+        <!-- limits inputs to be made of non-numbers -->
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" placeholder="John" pattern="[^0-9]*" title="Numbers are not allowed."required>
 
+        <!-- limits inputs to be made of non-numbers -->
         <label for="surname">Surname:</label>
         <input type="text" id="surname" name="surname" placeholder="Smith" pattern="[^0-9]*" title="Numbers are not allowed." required>
     
+        <!-- limits inputs to be 10 characters long and made of only digits-->
         <label for="id">ID:</label>
         <input type="text" id="id" name="ID" placeholder="XXXXXXXXXX" pattern="^\d{10}$" minlength="10" maxlength="10" title="Please enter exactly 10 digits (including leading zeros)." required>
         
+        <!-- min uses the Date() method to ensure that the minimum date cannot be less than the date of creation-->
         <label for="date">Date:</label>
-        <input type="date" id="date" name="date" min="2000-05-11" max="2080-05-20" required>
+        <input type="date" id="date" name="date" min="<%= new Date().toISOString().split('T')[0] %>" max="2080-12-12" required>
     
         <label for="time">Time:</label>
         <input type="time" id="time" name="time" required><br>
         <br>
         <br>
+        <!-- limits inputs to be 15 to 19 characters long and made of only digits-->
         <label for="cardNum">Card Number:</label>
         <input type="text" id="cardNum" name="cardNum" pattern="^\d{15,19}$" minlength="15" maxlength="19" title="Please enter a valid card number (15-19 digits)." required><br>
 
+        <!-- min uses the Date() method to ensure that the expiry date cannot be less than the date of creation-->
         <label for="cardExp">Card Expiry:</label>
-        <input type="month"  id="cardExp" name="cardExp" min="2024-10" max="2040-12" required><br>
+        <input type="month"  id="cardExp" name="cardExp" min="<%= new Date().toISOString().slice(0, 7) %>" required><br>
 
+        <!-- limits inputs to be 3 characters long and made of only digits-->
         <label for="cardSec">Card Security Code:</label>
         <input type="text" id="cardSec" name="cardSec" pattern="^\d{3}$" minlength="3" maxlength="3" title="Please enter the card's security code (3 digits)." required>
         <br><br>

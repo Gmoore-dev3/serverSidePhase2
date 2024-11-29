@@ -1,26 +1,43 @@
 <%- include('partials/header') %>
+<!-- edit form to edit a specific record -->
 <h1>Modify Record</h1>
-    <form action="/edit" method="post">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" placeholder="John" pattern="[^0-9]*" title="Numbers are not allowed."required>
+<h3>Fill in updated information below (no need to enter old data)</h3>
+    <form action="/edit" method="POST">
+        <!-- hidden input with a passed in MongoDB _id to specify record -->
+        <input type="hidden" name="_id" value="<%= _id %>">
+        
+        <!-- inputs (with validation) for the fields that should be updated in the record -->
+         <!-- limits inputs to be made of non-numbers -->
+        <label for="newName">Name:</label>
+        <input type="text" id="newName" name="newName" placeholder="John" pattern="[^0-9]*" title="Numbers are not allowed.">
 
-        <label for="surname">Surname:</label>
-        <input type="text" id="surname" name="surname" placeholder="Smith" pattern="[^0-9]*" title="Numbers are not allowed." required>
+        <!-- limits inputs to be made of non-numbers -->
+        <label for="newSurname">Surname:</label>
+        <input type="text" id="newSurname" name="newSurname" placeholder="Smith" pattern="[^0-9]*" title="Numbers are not allowed.">
     
-        <label for="id">ID:</label>
-        <input type="text" id="id" name="ID" placeholder="XXXXXXXXXX" pattern="^\d{10}$" minlength="10" maxlength="10" title="Please enter exactly 10 digits (including leading zeros)." required>
-    
-        <label for="date">Date:</label>
-        <input type="date" id="date" name="date" min="2000-05-11" max="2080-05-20" required>
-    
-        <label for="time">Time:</label>
-        <input type="time" id="time" name="time" required><br>
-        <br>
+        <!-- limits inputs to be 10 characters long and made of only digits-->
+        <label for="newId">ID:</label>
+        <input type="text" id="newId" name="newId" placeholder="XXXXXXXXXX" pattern="^\d{10}$" minlength="10" maxlength="10" title="Please enter exactly 10 digits (including leading zeros).">
+        
+        <!-- min uses the Date() method to ensure that the minimum date cannot be less than the date of creation-->
         <label for="newDate">New Date:</label>
-        <input type="date" id="newDate" name="newDate" required>
-        <br>
+        <input type="date" id="newDate" name="newDate" min="<%= new Date().toISOString().split('T')[0] %>" max="2080-12-12">
+
         <label for="newTime">New Time:</label>
-        <input type="time" id="newTime" name="newTime" required>
+        <input type="time" id="newTime" name="newTime">
+        <br>
+        <br>
+        <!-- limits inputs to be 15 to 19 characters long and made of only digits-->
+        <label for="newCardNum">Card Number:</label>
+        <input type="text" id="newCardNum" name="newCardNum" pattern="^\d{15,19}$" minlength="15" maxlength="19" title="Please enter a valid card number (15-19 digits)."><br>
+
+        <!-- min uses the Date() method to ensure that the expiry date cannot be less than the date of creation-->
+        <label for="newCardExp">Card Expiry:</label>
+        <input type="month"  id="newCardExp" name="newCardExp" min="<%= new Date().toISOString().slice(0, 7) %>"><br>
+
+        <!-- limits inputs to be 3 characters long and made of only digits-->
+        <label for="newCardSec">Card Security Code:</label>
+        <input type="text" id="newCardSec" name="newCardSec" pattern="^\d{3}$" minlength="3" maxlength="3" title="Please enter the card's security code (3 digits).">
         <br><br>
         <button type="submit">Edit Record</button>
     </form>

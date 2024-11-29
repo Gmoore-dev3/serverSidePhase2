@@ -1,67 +1,64 @@
+/* Basic Overall Styling */
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
-  color: #00B7FF;
+input, button{
+  font-size: 18px;
 }
 
-header {
-  margin-bottom: 20px;
-  background: white;
+a{
+  color: white;
 }
 
-/* General styling for the nav bar */
+/* Navigation Styling */
 nav {
-  background-color: #333; /* Dark background */
-  color: white; /* Text color */
-  padding: 10px 0; /* Vertical padding */
+  background-color: #333;
+  padding: 20px 0px 20px 0px;
+}
+.wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.wrapper {
-  max-width: 1200px; /* Maximum width */
-  margin: 0 auto; /* Center the nav */
-  display: flex; /* Use flexbox for layout */
-  justify-content: space-between; /* Space between items */
-  align-items: center; /* Center items vertically */
+/* Navigation Bar Styling */
+.navbar {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 10px;
+}
+
+/* Navigation Link Styling */
+.navbar li {
+  margin: 0 15px;
+}
+.navbar a {
+  color: white;
+  text-decoration: none;
+  padding: 20px 15px 20px 15px;
+  border-radius: 5px;
+}
+.navbar a:hover {
+  background-color: #555;
+  color: #ffcc00;
 }
 
 /* Logo styling */
 .logo {
-  color: white; /* Logo text color */
-  font-size: 24px; /* Logo font size */
-  text-decoration: none; /* Remove underline from logo */
+  width: 300px;
 }
 
-/* Navigation links */
-nav{
-  padding: 20px 0px 20px 0px;
-}
-.navbar {
-  list-style: none; /* Remove list styles */
-  display: flex; /* Use flexbox to layout links */
+/* Table styling */
+.Central{
+  display: flex;
   justify-content: center;
-  margin: 0; /* Remove margin */
-  padding: 10px;              /* Add some padding */
 }
-
-.navbar li {
-  margin: 0 15px;           /* Space between items */
-}
-
-.navbar a {
-  color: white;              /* Text color */
-  text-decoration: none;     /* Remove underline */
-  padding: 20px 15px 20px 15px;       /* Add padding to links */
-  border-radius: 5px;       /* Rounded corners */
-  transition: background-color 0.3s; /* Transition effect */
-}
-.navbar a:hover {
-  background-color: #555; /* Darker background on hover */
-  color: #ffcc00; /* Change color on hover */
-}
-
 .viewing{
   text-align: center;
 }
@@ -72,16 +69,21 @@ thead th{
 }
 tr:nth-child(odd) {background-color: #d7d7d7;}
 
-.Central{
-  display: flex;
-  justify-content: center;
+/* Main Information Styling */
+.middleInfo{
+  font-size: 20px;
+  padding: 0px 200px;
 }
 
+/* Footer Styling */
+footer {
+  background: #333;
+  color: #fff;
+  padding: 10px 10px;
+}
+
+/* Adaptive Styling */
 @media (max-width: 932px) {
-  .navbar {
-      flex-direction: column; /* Stack items vertically */
-  }
-  .navbar li {
-      margin: 10px 0;       /* Space between items in vertical layout */
-  }
+  .navbar {flex-direction: column;}
+  .navbar li {margin: 10px 0;}
 }

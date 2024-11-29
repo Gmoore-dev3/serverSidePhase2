@@ -1,21 +1,26 @@
 <%- include('partials/header') %>
 <h1>View Summary</h1>
+<!-- Message ejs variable for further information during certain operations-->
 <p><%= Message %></p>
 <form action="/view" method="post">
+    <!-- limits inputs to be made of non-numbers -->
     <label for="name">Name:</label>
     <input type="text" id="name" name="name" placeholder="John" pattern="[^0-9]*" title="Numbers are not allowed."required>
 
+    <!-- limits inputs to be made of non-numbers -->
     <label for="surname">Surname:</label>
     <input type="text" id="surname" name="surname" placeholder="Smith" pattern="[^0-9]*" title="Numbers are not allowed." required>
 
+    <!-- limits inputs to be 10 characters long and made of only digits-->
     <label for="id">ID:</label>
     <input type="text" id="id" name="ID" placeholder="XXXXXXXXXX" pattern="^\d{10}$" minlength="10" maxlength="10" title="Please enter exactly 10 digits (including leading zeros)." required>
     
     <label for="startDate">Date:</label>
-    <input type="Date" id="startDate" name="startDate" min="2000-05-11" max="2080-05-20" required>
+    <input type="Date" id="startDate" name="startDate" required>
 
     <label for="endDate">Date:</label>
-    <input type="Date" id="endDate" name="endDate" min="2000-05-11" max="2080-05-20" required>
+    <input type="Date" id="endDate" name="endDate" required>
+
     <button type="submit">Generate Summary</button>
 </form>
 <br>
@@ -23,5 +28,4 @@
 <form action="/view" method="post">
     <button type="submit">Generate All Trainings</button>
 </form>
-
 <%- include('partials/footer') %>
